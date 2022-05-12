@@ -62,6 +62,7 @@ router.post('/signup', function(req, res, next) {
   })
 });
 
+//POST LOG IN 
 router.post('/login', function(req, res, next) {
   //Make sure fields are filled in 
   if(!req.body.username || !req.body.password) {
