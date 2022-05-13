@@ -99,10 +99,57 @@ router.post('/login', function(req, res, next) {
   })
 });
 
+//TEST LOGIN GET 
 router.get('/login/test', isLoggedIn, (req, res)=>{
   res.json({message:"You are logged in"})
 })
 
+//GET USER PROFILE DELETE
+router.get('/delete', isLoggedIn, (req, res, next)=>{
+  User.findByIdAndRemove(req.user._id)
+  .then(()=>{
+    res.json({message: "Successfully deleted account"})
+  })
+  .catch((err)=>{
+    res.json(err.message)
+  })
+})
+
+//GET USER PROFILE UPDATE PAGE
+router.get('/user-update', isLoggedIn, (req, res, next)=>{
+  User.findById(req.user._id)
+  .then((foundUser)=>{
+    res.json("Found User")
+  })
+  .catch((err)=>{
+    res.json(err.message);
+  })
+}); 
+
+//POST USER PROFILE UPDATE PAGE 
+router.post('/user-update', isLoggedIn, (req, res, next)=> {
+  User.findByIdAndUpdate(req.user._id, {
+    username: req.body.username,
+    // password: req.body.password
+  }, {new: true})
+  .then((updatedUser)=>{
+    res.json({updatedUser})
+  })
+  .catch((err)=>{
+    res.json(err.message)
+  })
+});
+
+//GET USER PROFILE PAGE
+router.get('/user-profile', isLoggedIn, (req, res, next)=>{
+  User.findById(req.user._id)
+  .then((foundUser)=>{
+    res.json("Found User Profile")
+  })
+  .catch((err)=>{
+    res.json(err.message);
+  })
+}); 
 
 
 
