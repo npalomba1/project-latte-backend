@@ -19,10 +19,12 @@ router.post("/build-drink", isLoggedIn, (req, res, next)=>{
     Drink.create({
         name: req.body.name,
         title: req.body.title,
+        hotOrIced: req.body.hotOrIced,
+        description: req.body.description,
+        hasEspresso: req.body.hasEspresso,
+        hasMilk: req.body.hasMilk,
         ingredients: req.body.ingredients,
         creatorId: req.user._id,
-        
-
     })
     .then((createdDrink)=>{
         res.json(createdDrink)
@@ -31,6 +33,51 @@ router.post("/build-drink", isLoggedIn, (req, res, next)=>{
         res.json(error.message);
     })
 });
+
+//GET DELETE DRINK 
+router.get("/:id/delete-drink", isLoggedIn, (req, res, next) =>{
+    Drink.findByIdAndRemove(req.params.id)
+    .then((deletedDrink)=>{
+        console.log(deletedDrink)
+        res.json({message: "Successfully deleted drink"})
+    })
+    .catch((err)=>{
+        res.json(err.message) 
+    })
+})
+
+//POST UPDATE DRINK
+router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
+    Drink.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        title: req.body.title,
+        hotOrIced: req.body.hotOrIced,
+        description: req.body.description,
+        hasEspresso: req.body.hasEspresso,
+        hasMilk: req.body.hasMilk,
+        ingredients: req.body.ingredients,
+        creatorId: req.user._id,
+    }, {new: true})
+    .then((updatedDrink)=>{
+        console.log(updatedDrink)
+        res.json({message: "successfully updated drink"})
+    })
+    .catch((err)=>{
+        res.json(err.message)
+    })
+})
+
+// //GET ALL USERS DRINKS  -- best implemented in the User Router
+// router.get('/user-drinks', isLoggedIn, (req, res, next) => {
+//     Drink.find({creatorId: req.user._id})
+//     .then((usersDrinks)=>{
+//         console.log(usersDrinks)
+//         res.json({message: "here are the user's drinks"})
+//     })
+//     .catch((err)=>{
+//         res.json(err.message)
+//     })
+// })
 
 module.exports = router; 
 

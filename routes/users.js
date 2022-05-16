@@ -6,7 +6,10 @@ const jwt = require('jsonwebtoken');
 const saltrounds = 10; 
 require("dotenv/config"); 
 
+const Drink = require("../models/Drink.models");
+
 const isLoggedIn = require("../middleware/isLoggedIn")
+const fileUploader = require("../middleware/cloudinary.config")
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -14,16 +17,16 @@ router.get('/', function(req, res, next) {
 });
 
 //POST signup
-router.post('/signup', function(req, res, next) {
+router.post('/signup', fileUploader.single("imageUrl"), function(req, res, next) {
   //1. Make sure fields are filled in 
   if(!req.body.username || !req.body.password) {
-    return res.json({message: "Please fill out both fields"})
+    return res.status(400).json({message: "Please fill out both fields"})
   }
   //2. Make sure username isn't taken
   User.findOne({username: req.body.username})
   .then((foundUser)=> {
     if(foundUser){
-      return res.json({message: "Username is taken"})
+      return res.status(400).json({message: "Username is taken"})
     } else {
       //3. username can be used, now hash the password
       //3.1 generate the salt 
@@ -35,7 +38,8 @@ router.post('/signup', function(req, res, next) {
       //4. Create account 
       User.create({
         username: req.body.username,
-        password: hashedPassword
+        password: hashedPassword,
+        profileImage: req.file.path
       })
       .then((createdUser)=>{
         //5. create the JSON Web token (JWT)
@@ -51,14 +55,14 @@ router.post('/signup', function(req, res, next) {
 
       })
       .catch((err)=>{
-        res.json(err.message)
+        res.status(400).json(err.message)
       })
     }
 
 
   })
   .catch((err)=>{
-    res.json(err.message)
+    res.status(400).json(err.message)
   })
 });
 
@@ -104,6 +108,7 @@ router.get('/login/test', isLoggedIn, (req, res)=>{
   res.json({message:"You are logged in"})
 })
 
+
 //GET USER PROFILE DELETE
 router.get('/delete', isLoggedIn, (req, res, next)=>{
   User.findByIdAndRemove(req.user._id)
@@ -119,7 +124,7 @@ router.get('/delete', isLoggedIn, (req, res, next)=>{
 router.get('/user-update', isLoggedIn, (req, res, next)=>{
   User.findById(req.user._id)
   .then((foundUser)=>{
-    res.json("Found User")
+    res.json(foundUser)
   })
   .catch((err)=>{
     res.json(err.message);
@@ -127,10 +132,11 @@ router.get('/user-update', isLoggedIn, (req, res, next)=>{
 }); 
 
 //POST USER PROFILE UPDATE PAGE 
-router.post('/user-update', isLoggedIn, (req, res, next)=> {
+router.post('/user-update', isLoggedIn, fileUploader.single("imageUrl"), (req, res, next)=> {
   User.findByIdAndUpdate(req.user._id, {
     username: req.body.username,
-    // password: req.body.password
+        // password: hashedPassword,
+    profileImage: req.file.path
   }, {new: true})
   .then((updatedUser)=>{
     res.json({updatedUser})
@@ -141,7 +147,7 @@ router.post('/user-update', isLoggedIn, (req, res, next)=> {
 });
 
 //GET USER PROFILE PAGE
-router.get('/user-profile', isLoggedIn, (req, res, next)=>{
+router.get('/user-home', isLoggedIn, (req, res, next)=>{
   User.findById(req.user._id)
   .then((foundUser)=>{
     res.json("Found User Profile")
@@ -150,6 +156,19 @@ router.get('/user-profile', isLoggedIn, (req, res, next)=>{
     res.json(err.message);
   })
 }); 
+
+//GET ALL USERS DRINKS 
+router.get('/user-profile/users-drinks', isLoggedIn, (req, res, next) => {
+  Drink.find({creatorId: req.user._id})
+  .then((usersDrinks)=>{
+      console.log(usersDrinks)
+      res.json(usersDrinks)
+  })
+  .catch((err)=>{
+      res.json(err.message)
+  })
+})
+
 
 
 

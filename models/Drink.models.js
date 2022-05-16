@@ -11,7 +11,7 @@ const drinkSchema = new Schema( {
         enum: ["Hot", "Iced"],
         // required: true
     }], 
-    hasEsspresso: [{
+    hasEspresso: [{
         type: String,
         enum: ["Coffee", "Espresso", "Coffee and Espresso"] 
     }],
