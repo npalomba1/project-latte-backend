@@ -35,11 +35,11 @@ router.post("/build-drink", isLoggedIn, (req, res, next)=>{
     })
 });
 
-//GET DELETE DRINK 
-router.get("/:id/delete-drink", isLoggedIn, (req, res, next) =>{
-    Drink.findByIdAndRemove(req.params.id)
-    .then((deletedDrink)=>{
-        console.log(deletedDrink)
+//POST DELETE DRINK 
+router.post("/delete-drink/:drinkId", isLoggedIn, (req, res, next) =>{
+    Drink.findByIdAndRemove(req.params.drinkId)
+    .then(()=>{
+        // console.log(deletedDrink)
         res.json({message: "Successfully deleted drink"})
     })
     .catch((err)=>{
@@ -49,6 +49,7 @@ router.get("/:id/delete-drink", isLoggedIn, (req, res, next) =>{
 
 //POST UPDATE DRINK
 router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
+    console.log("drink", req.body)
     Drink.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         title: req.body.title,
@@ -57,6 +58,7 @@ router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
         hasEspresso: req.body.hasEspresso,
         hasMilk: req.body.hasMilk,
         ingredients: req.body.ingredients,
+        alternativeMilks: req.body.alternativeMilks,
         creatorId: req.user._id,
     }, {new: true})
     .then((updatedDrink)=>{
@@ -67,6 +69,19 @@ router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
         res.json(err.message)
     })
 })
+
+//GET UPDATE DRINK
+router.get('/:id/update-drink', isLoggedIn, (req, res, next) => {
+    Drink.findById(req.params.id)
+    .then((usersDrinks)=>{
+        console.log(usersDrinks)
+        res.json(usersDrinks)
+    })
+    .catch((err)=>{
+        res.json(err.message)
+    })
+  })
+
 
 // //GET ALL USERS DRINKS  -- best implemented in the User Router
 // router.get('/user-drinks', isLoggedIn, (req, res, next) => {
