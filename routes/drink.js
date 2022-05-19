@@ -24,6 +24,7 @@ router.post("/build-drink", isLoggedIn, (req, res, next)=>{
         hasEspresso: req.body.hasEspresso,
         hasMilk: req.body.hasMilk,
         ingredients: req.body.ingredients,
+        alternativeMilks: req.body.alternativeMilks,
         creatorId: req.user._id,
     })
     .then((createdDrink)=>{

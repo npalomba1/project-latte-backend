@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 });
 
 //POST signup
-router.post('/signup', fileUploader.single("imageUrl"), function(req, res, next) {
+router.post('/signup', function(req, res, next) {
   //1. Make sure fields are filled in 
   if(!req.body.username || !req.body.password) {
     return res.status(400).json({message: "Please fill out both fields"})
@@ -39,7 +39,7 @@ router.post('/signup', fileUploader.single("imageUrl"), function(req, res, next)
       User.create({
         username: req.body.username,
         password: hashedPassword,
-        profileImage: req.file.path
+        profileImage: req.body.profileImage
       })
       .then((createdUser)=>{
         //5. create the JSON Web token (JWT)
@@ -136,7 +136,7 @@ router.post('/user-update', isLoggedIn, fileUploader.single("imageUrl"), (req, r
   User.findByIdAndUpdate(req.user._id, {
     username: req.body.username,
         // password: hashedPassword,
-    profileImage: req.file.path
+    profileImage: req.body.profileImage
   }, {new: true})
   .then((updatedUser)=>{
     res.json({updatedUser})
@@ -150,7 +150,7 @@ router.post('/user-update', isLoggedIn, fileUploader.single("imageUrl"), (req, r
 router.get('/user-home', isLoggedIn, (req, res, next)=>{
   User.findById(req.user._id)
   .then((foundUser)=>{
-    res.json("Found User Profile")
+    console.log(foundUser)
   })
   .catch((err)=>{
     res.json(err.message);
@@ -169,6 +169,11 @@ router.get('/user-profile/users-drinks', isLoggedIn, (req, res, next) => {
   })
 })
 
+//POST IMAGE UPLOADER FOR PROFILE PICTURES
+router.post("/signup-image", fileUploader.single("imageUrl"), (req, res, next)=>{
+  res.json(req.file.path); 
+})
+// .then(())
 
 
 

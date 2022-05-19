@@ -8,7 +8,7 @@ const drinkSchema = new Schema( {
     },
     hotOrIced: [{
         type: String,
-        enum: ["Hot", "Iced"],
+        enum: ["hot", "iced"],
         // required: true
     }], 
     hasEspresso: [{
@@ -28,7 +28,15 @@ const drinkSchema = new Schema( {
     }, 
     ingredients: [{
         type: String,
-        enum: ["Milk", "No Milk", "Steamed Milk", "Coffee", "Espresso", "Foam", "Chocolate", "Panela", "Hot Water", "Whiskey", "Ice Cream", "Sugar", "Cream" ] 
+        // enum: ["Milk", "No Milk", "Steamed Milk", "Coffee", "Espresso", "Foam", "Chocolate", "Panela", "Hot Water", "Whiskey", "Ice Cream", "Sugar", "Cream" ] 
+    }],
+    flavors: [{
+        type: String,
+        enum: [" ", "Simple Syrup", "Vanilla", "Hazelnut", "Caramel", "Mocha", "Peppermint" ]
+    }],
+    alternativeMilks: [{
+        type: String,
+        enum: [" ", "Almond Milk", "Soy Milk", "Oat Milk", "Coconut Milk", "Pistachio Milk", "Whole Milk", "2% Milk", "Nonfat Milk", "Half-and-Half"]
     }],
     creatorId: {
         type: Schema.Types.ObjectId,

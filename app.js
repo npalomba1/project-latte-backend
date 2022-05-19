@@ -47,10 +47,15 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// mongoose
+//   .connect(process.env.MONGODB_URI || "mongodb://localhost/project-latte-server")
+//   .then((x) =>
+//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+//   )
+//   .catch((err) => console.error("Error connecting to mongo", err));
+
 mongoose
-  .connect(  
- process.env.MONGODB_URI 
-  || "mongodb://localhost/project-latte-server")
+  .connect("mongodb://localhost/project-latte-server")
   .then((x) =>
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   )
