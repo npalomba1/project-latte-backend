@@ -9,7 +9,8 @@ require("dotenv/config");
 const Drink = require("../models/Drink.models");
 
 const isLoggedIn = require("../middleware/isLoggedIn")
-const fileUploader = require("../middleware/cloudinary.config")
+const fileUploader = require("../middleware/cloudinary.config");
+const  axios = require('axios');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -34,7 +35,42 @@ router.post('/signup', function(req, res, next) {
 
       //3.2 hash the password
       const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+      if(!req.body.profileImage){
+        const randomNum = Math.floor(Math.random()*391) + 1
+        axios
+        .get(`http://acnhapi.com/v1/villagers/${randomNum}`)
+        .then((results)=>{
+          // res.json({profileImage: results.data.icon_uri})
+          User.create({
+            username: req.body.username,
+            password: hashedPassword,
+            profileImage: results.data.icon_uri
+          })
+          .then((createdUser)=>{
+            //5. create the JSON Web token (JWT)
+            //5.1 Create the payload
+            const payload = {_id: createdUser._id}
+    
+            //5.2 create the token
+            const token = jwt.sign(payload, process.env.SECRET,
+              { algorithm: "HS256", expiresIn: "24hr"}
+            )
+    
+            res.json({token: token})
+    
+          })
+          .catch((err)=>{
+            res.status(400).json(err.message)
+          })
 
+
+
+        })
+        .catch((err)=>{
+          res.status(400).json
+        })
+    
+      } else {
       //4. Create account 
       User.create({
         username: req.body.username,
@@ -58,6 +94,7 @@ router.post('/signup', function(req, res, next) {
         res.status(400).json(err.message)
       })
     }
+  }
 
 
   })
@@ -70,7 +107,7 @@ router.post('/signup', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   //Make sure fields are filled in 
   if(!req.body.username || !req.body.password) {
-    return res.json({message: "Please fill out both fields"})
+    return res.status(400).json({message: "Please fill out both fields"})
   }
 
   //2. check username
@@ -78,7 +115,7 @@ router.post('/login', function(req, res, next) {
   .then((foundUser)=>{
     //2.1 make sure username exists
     if(!foundUser){
-      return res.json({message: "Username or password incorrect"})
+      return res.status(400).json({message: "Username or password incorrect"})
     }
     //2.2 make sure passwords match
     const doesMatch = bcrypt.compareSync(req.body.password, foundUser.password)
@@ -94,7 +131,7 @@ router.post('/login', function(req, res, next) {
 
         res.json({token: token})
     } else {
-      return res.json({message: "Username or password incorrect"})
+      return res.status(400).json({message: "Username or password incorrect"})
     }
 
   })
@@ -109,8 +146,8 @@ router.get('/login/test', isLoggedIn, (req, res)=>{
 })
 
 
-//GET USER PROFILE DELETE
-router.get('/delete', isLoggedIn, (req, res, next)=>{
+//POST USER PROFILE DELETE
+router.post('/delete', isLoggedIn, (req, res, next)=>{
   User.findByIdAndRemove(req.user._id)
   .then(()=>{
     res.json({message: "Successfully deleted account"})
@@ -150,7 +187,7 @@ router.post('/user-update', isLoggedIn, fileUploader.single("imageUrl"), (req, r
 router.get('/user-home', isLoggedIn, (req, res, next)=>{
   User.findById(req.user._id)
   .then((foundUser)=>{
-    console.log(foundUser)
+    res.json(foundUser)
   })
   .catch((err)=>{
     res.json(err.message);
