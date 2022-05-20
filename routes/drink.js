@@ -25,6 +25,7 @@ router.post("/build-drink", isLoggedIn, (req, res, next)=>{
         hasMilk: req.body.hasMilk,
         ingredients: req.body.ingredients,
         alternativeMilks: req.body.alternativeMilks,
+        flavors: req.body.flavors,
         creatorId: req.user._id,
     })
     .then((createdDrink)=>{
@@ -59,6 +60,7 @@ router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
         hasMilk: req.body.hasMilk,
         ingredients: req.body.ingredients,
         alternativeMilks: req.body.alternativeMilks,
+        flavors: req.body.flavors,
         creatorId: req.user._id,
     }, {new: true})
     .then((updatedDrink)=>{
