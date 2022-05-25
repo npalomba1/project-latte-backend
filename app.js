@@ -26,8 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //CORS must come before the routes
 app.use(cors({
-  // origin: [process.env.FRONTEND_URL] this to toggle local frontend, comment the above and comment this line back in
-  origin: ['http://localhost:3000'] 
+  origin: [process.env.FRONTEND_URL] 
+  // origin: ['http://localhost:3000'] this to toggle local frontend, comment the above and comment this line back in
 }));
 
 app.use('/', indexRouter);
@@ -50,19 +50,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// mongoose
-//   .connect(process.env.MONGODB_URI || "mongodb://localhost/project-latte-server")
-//   .then((x) =>
-//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-//   )
-//   .catch((err) => console.error("Error connecting to mongo", err));
-
 mongoose
-  .connect("mongodb://localhost/project-latte-server")
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/project-latte-server")
   .then((x) =>
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   )
   .catch((err) => console.error("Error connecting to mongo", err));
+
+// mongoose
+//   .connect("mongodb://localhost/project-latte-server")
+//   .then((x) =>
+//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+//   )
+//   .catch((err) => console.error("Error connecting to mongo", err));
 
 
 module.exports = app;
