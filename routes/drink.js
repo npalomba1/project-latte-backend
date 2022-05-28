@@ -50,7 +50,7 @@ router.post("/delete-drink/:drinkId", isLoggedIn, (req, res, next) =>{
 
 //POST UPDATE DRINK
 router.post("/:id/update-drink", isLoggedIn, (req, res, next)=>{
-    console.log("drink", req.body)
+    
     Drink.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         title: req.body.title,
