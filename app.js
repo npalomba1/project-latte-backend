@@ -26,8 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //CORS must come before the routes
 app.use(cors({
-  origin: [process.env.FRONTEND_URL] 
-  // origin: ['http://localhost:3000'] this to toggle local frontend, comment the above and comment this line back in
+  // origin: [process.env.FRONTEND_URL] this to toggle local sfrontend, comment the above and comment this line back in
+  origin: ['http://localhost:3000'] 
 }));
 
 app.use('/', indexRouter);
