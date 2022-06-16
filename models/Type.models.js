@@ -12,7 +12,16 @@ const typeSchema = new Schema( {
     hasMik: [{
         type: String,
         enum: ["Milk", "No Milk", "Steamed Milk"]
-    }]
+    }],
+    description: {
+        type: String,
+        required: true
+    },
+    id: {
+        type: Number,
+        required: true
+    }
+    
 
 })
 
