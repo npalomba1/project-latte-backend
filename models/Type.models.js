@@ -7,6 +7,10 @@ const typeSchema = new Schema( {
     },
     hotOrIced: [{
         type: String,
+        enum: ["hot", "iced"]
+    }],
+    hasEspresso: [{
+        type: String,
         enum: ["Coffee", "Espresso", "Coffee and Espresso"]
     }],
     hasMik: [{
