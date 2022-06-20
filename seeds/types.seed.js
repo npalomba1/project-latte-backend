@@ -17,6 +17,14 @@ const drinkTypes = [
         hasMilk: "Steamed Milk",
         description: "A cappuccino is a coffee-based drink made primarily from espresso and milk. It consists of one-third espresso, one-third steamed milk and one-third milk foam and is generally served in a 6 to 8-ounce cup.",
         id: 2
+    },
+    {
+        title: "Caffe Mocha",
+        hotOrIced: "hot",
+        hasEspresso: "Espresso",
+        hasMilk: "Steamed Milk",
+        description: "A cappuccino is a coffee-based drink made primarily from espresso and milk. It consists of one-third espresso, one-third steamed milk and one-third milk foam and is generally served in a 6 to 8-ounce cup.",
+        id: 3
     }
 ]
 
