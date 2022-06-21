@@ -13,7 +13,7 @@ const typeSchema = new Schema( {
         type: String,
         enum: ["Coffee", "Espresso", "Coffee and Espresso"]
     }],
-    hasMik: [{
+    hasMilk: [{
         type: String,
         enum: ["Milk", "No Milk", "Steamed Milk"]
     }],

@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
 const saltrounds = 10; 
 require("dotenv/config"); 
+const Type = require('../models/Type.models')
 
 const isLoggedIn = require("../middleware/isLoggedIn");
 const Drink = require('../models/Drink.models');
@@ -78,6 +79,19 @@ router.get('/:id/update-drink', isLoggedIn, (req, res, next) => {
     .then((usersDrinks)=>{
         console.log(usersDrinks)
         res.json(usersDrinks)
+    })
+    .catch((err)=>{
+        res.json(err.message)
+    })
+  })
+
+
+  //GET ALL DRINK TYPES FROM SEED
+  router.get("/drink-types", isLoggedIn, (req, res, next) =>{
+    Type.find()
+    .then((allTypes)=>{
+        console.log(allTypes)
+        res.json(allTypes)
     })
     .catch((err)=>{
         res.json(err.message)
