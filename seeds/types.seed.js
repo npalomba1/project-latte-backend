@@ -25,6 +25,14 @@ const drinkTypes = [
         hasMilk: "Steamed Milk",
         description: "Like a caffe latte, it is typically one third espresso and two thirds steamed milk, but a portion of chocolate is added, typically in the form of sweet cocoa powder, although many varieties use chocolate syrup. Mochas can contain dark or milk chocolate.",
         id: 3
+    },
+    {
+        title: "Flat White",
+        hotOrIced: "hot",
+        hasEspresso: "Espresso",
+        hasMilk: "Steamed Milk",
+        description: "Flat White is a coffee beverage from Australia and New Zealand. It is prepared by pouring microfoam (steamed milk from the bottom of a pitcher) over a single (30ml) or double shot (60ml) of espresso. It is similar to latte and cafe au lait and like other espresso based beverages it can be interpreted various ways.",
+        id: 4
     }
 ]
 
