@@ -17,6 +17,10 @@ const typeSchema = new Schema( {
         type: String,
         enum: ["Milk", "No Milk", "Steamed Milk"]
     }],
+    ingredients: [{
+        type: String,
+        required: true
+    }],
     description: {
         type: String,
         required: true
