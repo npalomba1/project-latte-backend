@@ -37,7 +37,26 @@ const drinkTypes = [
         ingredients: ["Espresso", "Steamed Milk"],
         description: "Flat White is a coffee beverage from Australia and New Zealand. It is prepared by pouring microfoam (steamed milk from the bottom of a pitcher) over a single (30ml) or double shot (60ml) of espresso. It is similar to latte and cafe au lait and like other espresso based beverages it can be interpreted various ways.",
         id: 4
+    },
+    {
+        title: "Cold Brew",
+        hotOrIced: "iced",
+        hasEspresso: "Coffee",
+        hasMilk: "No Milk",
+        ingredients: ["Coffee"],
+        description: "Cold Brew is a coffee made by mixing coffee grounds with water, over a long period of time. Typically cold brewed coffee takes 12-24 hours; at room temperature or lower.",
+        id: 5
+    },
+    {
+        title: "Café au Lait",
+        hotOrIced: "hot",
+        hasEspresso: "Coffee",
+        hasMilk: "Steamed Milk",
+        ingredients: ["Coffee"],
+        description: "Café au lait is a French coffee drink. It is a coffee beverage consisting strong or bold coffee mixed with scalded milk in approximately a 1:1 ratio.",
+        id: 6
     }
+
 ]
 
 mongoose
